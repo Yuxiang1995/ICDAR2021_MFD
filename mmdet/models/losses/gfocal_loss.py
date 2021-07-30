@@ -6,7 +6,7 @@ from .utils import weighted_loss
 
 
 @weighted_loss
-def quality_focal_loss(pred, target, beta=2.0):
+def quality_focal_loss(pred, target, beta=2.0, use_sigmod=True):
     r"""Quality Focal Loss (QFL) is from `Generalized Focal Loss: Learning
     Qualified and Distributed Bounding Boxes for Dense Object Detection
     <https://arxiv.org/abs/2006.04388>`_.
@@ -27,13 +27,16 @@ def quality_focal_loss(pred, target, beta=2.0):
         including category label and quality label, respectively"""
     # label denotes the category id, score denotes the quality score
     label, score = target
+    if use_sigmod:
+        func = F.binary_cross_entropy_with_logits
+    else:
+        func = F.binary_cross_entropy
 
     # negatives are supervised by 0 quality score
-    pred_sigmoid = pred.sigmoid()
+    pred_sigmoid = pred.sigmoid() if use_sigmod else pred
     scale_factor = pred_sigmoid
     zerolabel = scale_factor.new_zeros(pred.shape)
-    loss = F.binary_cross_entropy_with_logits(
-        pred, zerolabel, reduction='none') * scale_factor.pow(beta)
+    loss = func(pred, zerolabel, reduction='none') * scale_factor.pow(beta)
 
     # FG cat_id: [0, num_classes -1], BG cat_id: num_classes
     bg_class_ind = pred.size(1)
@@ -41,8 +44,7 @@ def quality_focal_loss(pred, target, beta=2.0):
     pos_label = label[pos].long()
     # positives are supervised by bbox quality (IoU) score
     scale_factor = score[pos] - pred_sigmoid[pos, pos_label]
-    loss[pos, pos_label] = F.binary_cross_entropy_with_logits(
-        pred[pos, pos_label], score[pos],
+    loss[pos, pos_label] = func(pred[pos, pos_label], score[pos],
         reduction='none') * scale_factor.abs().pow(beta)
 
     loss = loss.sum(dim=1, keepdim=False)
@@ -95,7 +97,7 @@ class QualityFocalLoss(nn.Module):
                  reduction='mean',
                  loss_weight=1.0):
         super(QualityFocalLoss, self).__init__()
-        assert use_sigmoid is True, 'Only sigmoid in QFL supported now.'
+        # assert use_sigmoid is True, 'Only sigmoid in QFL supported now.'
         self.use_sigmoid = use_sigmoid
         self.beta = beta
         self.reduction = reduction
@@ -126,16 +128,14 @@ class QualityFocalLoss(nn.Module):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-        if self.use_sigmoid:
-            loss_cls = self.loss_weight * quality_focal_loss(
-                pred,
-                target,
-                weight,
-                beta=self.beta,
-                reduction=reduction,
-                avg_factor=avg_factor)
-        else:
-            raise NotImplementedError
+        loss_cls = self.loss_weight * quality_focal_loss(
+            pred,
+            target,
+            weight,
+            beta=self.beta,
+            use_sigmod=self.use_sigmoid,
+            reduction=reduction,
+            avg_factor=avg_factor)
         return loss_cls
 
 
