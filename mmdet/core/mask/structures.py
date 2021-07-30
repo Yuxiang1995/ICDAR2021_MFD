@@ -559,6 +559,7 @@ class PolygonMasks(BaseInstanceMasks):
                 resized_poly = []
                 for p in poly_per_obj:
                     p = p.copy()
+                    p = p.astype(np.float64)
                     p[0::2] *= w_scale
                     p[1::2] *= h_scale
                     resized_poly.append(p)
