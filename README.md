@@ -10,7 +10,7 @@ We employed [ATSS](https://arxiv.org/abs/1912.02424) as our sampling strategy in
 Finally, with a series of useful tricks and model ensembles, our method was ranked 1st in the MFD task.
 
 ![Random Sampling(left) ATSS(right)](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/resources/sampling_strategy.png)
-**Random Sampling(left) ATSS(right)
+**Random Sampling(left) ATSS(right)**
 
 
 # Getting Start
@@ -106,7 +106,7 @@ Tr01
     └── 0304067-page08.jpg
 ```
 
-And then, run data_preprocess.py to get coco format label. 
+And then, run [data_preprocess.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/data_preprocess.py) to get coco format label. 
 Remember to change **'img_path'**, **'txt_path'**, **'dst_path'** and **'train_path'** to your own path.  
 
 ```shell
@@ -153,21 +153,21 @@ In additional, change **'data_root'** in ./configs/_base_/datasets/formula_detec
    
 ## Inference
 We need to get csv file to evaluate and txt file to model ensemble.
-Run tools/test_formula.py
+Run [tools/test_formula.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/test_formula.py)
 ```shell
 python tools/test_formula.py configs/gfl/gfl_s101_fpn_2x_coco.py ${checkpoint path} 
 ```
 The txt file folder 'result' is at the same level with work-dir on training. And You can specify the path of csv file in line 231.
 
 ## Model Ensemble
-Run tools/model_fusion_test.py. It should be noted that ensemble-boxes must be installed.
+Run [tools/model_fusion_test.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/model_fusion_test.py). It should be noted that ensemble-boxes must be installed.
 And the path of results is needed to be change. Two similar models can obtain the best result.
 ```shell
 python tools/model_fusion_test.py
 ```
 
 ## Evaluation
-evaluate.py is the official evaluation tool in this competition.
+[evaluate.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/evaluate.py) is the official evaluation tool in this competition.
 ```shell
 python evaluate.py ${GT_DIR} ${CSV_Pred_File}
 ```
