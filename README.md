@@ -78,5 +78,57 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
     pip install ensemble-boxes
     pip install -v -e .  # or "python setup.py develop"
     ```
-   
+
+# Usage
+
 ## Data Preparation
+Firstly, you need to split the image and txt file into two different folder from the original data. For example like this.
+
+```shell
+Tr01
+├── gt
+│   ├── 0001125-color_page02.txt
+│   ├── 0001125-color_page05.txt
+│   ├── ...
+│   └── 0304067-color_page08.txt
+├── img
+    ├── 0001125-page02.jpg
+    ├── 0001125-page05.jpg
+    ├── ...
+    └── 0304067-page08.jpg
+```
+
+And then, run data_preprocess.py to get coco format label. 
+Remember to change **'img_path'**, **'txt_path'**, **'dst_path'** and **'train_path'** to your own path.  
+
+```shell
+python ./tools/data_preprocess.py
+```
+
+Finally, the structure of data folder will be like this.
+```shell
+Tr01
+├── gt
+│   ├── 0001125-color_page02.txt
+│   ├── 0001125-color_page05.txt
+│   ├── ...
+│   └── 0304067-color_page08.txt
+│
+├── gt_icdar
+│   ├── 0001125-color_page02.txt
+│   ├── 0001125-color_page05.txt
+│   ├── ...
+│   └── 0304067-color_page08.txt
+│   
+├── img
+│   ├── 0001125-page02.jpg
+│   ├── 0001125-page05.jpg
+│   ├── ...
+│   └── 0304067-page08.jpg
+│
+└── train_coco.json
+```
+
+In additional, change **'data_root'** in ./configs/_base_/datasets/formula_detection.py to your path.
+
+## Train
