@@ -9,6 +9,8 @@ We employed [ATSS](https://arxiv.org/abs/1912.02424) as our sampling strategy in
 [GFL](https://arxiv.org/abs/2006.04388) is adopted to our loss.
 Finally, with a series of useful tricks and model ensembles, our method was ranked 1st in the MFD task.
 
+![Random Sampling(left) ATSS(right)](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/resources/sampling_strategy.png)
+**Random Sampling(left) ATSS(right)
 
 
 # Getting Start
