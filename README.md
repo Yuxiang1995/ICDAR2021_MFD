@@ -3,6 +3,14 @@ This project releases our 1st place solution on **ICDAR 2021 Competition on Math
 We implement our solution based on [MMDetection](https://github.com/open-mmlab/mmdetection), which is an open source object detection toolbox based on PyTorch.
  You can click [here](http://transcriptorium.eu/~htrcontest/MathsICDAR2021/) for more details about this competition.
 
+## Method Description
+We built our approach on [FCOS](https://arxiv.org/abs/1904.01355), A simple and strong anchor-free object detector, with [ResNeSt](https://arxiv.org/abs/2004.08955) as our backbone, to detect embedded and isolated formulas. 
+We employed [ATSS](https://arxiv.org/abs/1912.02424) as our sampling strategy instead of random sampling to eliminate the effects of sample imbalance. Moreover, we observed and revealed the influence of different FPN levels on the detection result. 
+[GFL](https://arxiv.org/abs/2006.04388) is adopted to our loss.
+Finally, with a series of useful tricks and model ensembles, our method was ranked 1st in the MFD task.
+
+
+
 # Getting Start
 
 ## Prerequisites
@@ -22,8 +30,6 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 
 1. Install PyTorch and torchvision following the [official instructions
 ](https://pytorch.org/), e.g.,
-   
-   1.3.1=<pytorch version<=1.6.0
 
     ```shell
     pip install pytorch torchvision -c pytorch
@@ -132,3 +138,114 @@ Tr01
 In additional, change **'data_root'** in ./configs/_base_/datasets/formula_detection.py to your path.
 
 ## Train
+
+1. train with single gpu on ResNeSt50
+   ```shell
+   python tools/train.py configs/gfl/gfl_s50_fpn_2x_coco.py --gpus 1 --work-dir ${Your Dir}
+   ```
+   
+2. train with 8 gpus on ResNeSt101
+   ```shell
+   ./tools/dist_train.sh configs/gfl/gfl_s101_fpn_2x_coco.py 8 --work-dir ${Your Dir}
+   ```
+   
+## Inference
+We need to get csv file to evaluate and txt file to model ensemble.
+Run tools/test_formula.py
+```shell
+python tools/test_formula.py configs/gfl/gfl_s101_fpn_2x_coco.py ${checkpoint path} 
+```
+The txt file folder 'result' is at the same level with work-dir on training. And You can specify the path of csv file in line 231.
+
+## Model Ensemble
+Run tools/model_fusion_test.py. It should be noted that ensemble-boxes must be installed.
+And the path of results is needed to be change. Two similar models can obtain the best result.
+```shell
+python tools/model_fusion_test.py
+```
+
+## Evaluation
+evaluate.py is the official evaluation tool in this competition.
+```shell
+python evaluate.py ${GT_DIR} ${CSV_Pred_File}
+```
+Notice: GT_DIR is the path of original data folder which contains both the image and txt file.
+CSV_Pred_File is the path of the final prediction csv file. 
+
+# Result
+This result train with Tr00, Tr01, Va00 and Va01, test at Ts01.
+
+**F1-score**
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>embedded</th>
+            <th>isolated</th>
+            <th>total</th>
+        </tr>
+        <tr>
+            <th>ResNeSt50-DCN</th>
+            <th>95.67</th>
+            <th>97.67</th>
+            <th>96.03</th>
+        </tr>
+        <tr>
+            <th>ResNeSt101-DCN</th>
+            <th>96.11</th>
+            <th>97.75</th>
+            <th>96.41</th>
+        </tr>
+    </table>
+
+The result we finally submitted is obtained by fusion of two Resnest101+GFL models with different random seeds and all the labeled data.
+The final Ranking can be seen in our [technical report](https://arxiv.org/abs/2107.05534).
+
+# License
+This project is licensed under the MIT License. See LICENSE for more details.
+
+# Citations
+```shell
+@article{GFLli2020generalized,
+  title={Generalized focal loss: Learning qualified and distributed bounding boxes for dense object detection},
+  author={Li, Xiang and Wang, Wenhai and Wu, Lijun and Chen, Shuo and Hu, Xiaolin and Li, Jun and Tang, Jinhui and Yang, Jian},
+  journal={arXiv preprint arXiv:2006.04388},
+  year={2020}
+}
+@inproceedings{ATSSzhang2020bridging,
+  title={Bridging the gap between anchor-based and anchor-free detection via adaptive training sample selection},
+  author={Zhang, Shifeng and Chi, Cheng and Yao, Yongqiang and Lei, Zhen and Li, Stan Z},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={9759--9768},
+  year={2020}
+}
+@inproceedings{FCOStian2019fcos,
+  title={Fcos: Fully convolutional one-stage object detection},
+  author={Tian, Zhi and Shen, Chunhua and Chen, Hao and He, Tong},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={9627--9636},
+  year={2019}
+}
+@article{solovyev2019weighted,
+  title={Weighted boxes fusion: ensembling boxes for object detection models},
+  author={Solovyev, Roman and Wang, Weimin and Gabruseva, Tatiana},
+  journal={arXiv preprint arXiv:1910.13302},
+  year={2019}
+}
+@article{ResNestzhang2020resnest,
+  title={Resnest: Split-attention networks},
+  author={Zhang, Hang and Wu, Chongruo and Zhang, Zhongyue and Zhu, Yi and Lin, Haibin and Zhang, Zhi and Sun, Yue and He, Tong and Mueller, Jonas and Manmatha, R and others},
+  journal={arXiv preprint arXiv:2004.08955},
+  year={2020}
+}
+@article{MMDetectionchen2019mmdetection,
+  title={MMDetection: Open mmlab detection toolbox and benchmark},
+  author={Chen, Kai and Wang, Jiaqi and Pang, Jiangmiao and Cao, Yuhang and Xiong, Yu and Li, Xiaoxiao and Sun, Shuyang and Feng, Wansen and Liu, Ziwei and Xu, Jiarui and others},
+  journal={arXiv preprint arXiv:1906.07155},
+  year={2019}
+}
+```
+
+# Acknowledgements
+* [MMDetection](https://github.com/open-mmlab/mmdetection/tree/master)
+* [Weighted Box Fusion](https://github.com/ZFTurbo/Weighted-Boxes-Fusion)
+* [Ranger](https://github.com/lessw2020/Ranger-Deep-Learning-Optimizer)
