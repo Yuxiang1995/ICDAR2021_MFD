@@ -79,10 +79,10 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
     pip install mmcv-full
     ```
    
-3. Install build requirements and then install MMDetection.
+3. Install build requirements and then compile MMDetection.
 
     ```shell
-    pip install -r requirements/build.txt
+    pip install -r requirements.txt
     pip install tensorboard
     pip install ensemble-boxes
     pip install -v -e .  # or "python setup.py develop"
@@ -91,7 +91,7 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 # Usage
 
 ## Data Preparation
-Firstly, you need to split the image and txt file into two different folder from the original data. For example like this.
+Firstly, Firstly, you need to put the image files and the GT files into two separate folders as below.
 
 ```shell
 Tr01
@@ -107,14 +107,14 @@ Tr01
     └── 0304067-page08.jpg
 ```
 
-And then, run [data_preprocess.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/data_preprocess.py) to get coco format label. 
+Secondly, run [data_preprocess.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/data_preprocess.py) to get coco format label. 
 Remember to change **'img_path'**, **'txt_path'**, **'dst_path'** and **'train_path'** to your own path.  
 
 ```shell
 python ./tools/data_preprocess.py
 ```
 
-Finally, the structure of data folder will be like this.
+The new structure of data folder will become,
 ```shell
 Tr01
 ├── gt
@@ -138,7 +138,7 @@ Tr01
 └── train_coco.json
 ```
 
-In additional, change **'data_root'** in ./configs/_base_/datasets/formula_detection.py to your path.
+Finally, change **'data_root'** in ./configs/_base_/datasets/formula_detection.py to your path.
 
 ## Train
 
@@ -153,31 +153,28 @@ In additional, change **'data_root'** in ./configs/_base_/datasets/formula_detec
    ```
    
 ## Inference
-We need to get csv file to evaluate and txt file to model ensemble.
 Run [tools/test_formula.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/test_formula.py)
 ```shell
 python tools/test_formula.py configs/gfl/gfl_s101_fpn_2x_coco.py ${checkpoint path} 
 ```
-The txt file folder 'result' is at the same level with work-dir on training. And You can specify the path of csv file in line 231.
+It will generate a 'result' file at the same level with work-dir in default. You can specify the output path of the result file in line 231.
 
 ## Model Ensemble
-Run [tools/model_fusion_test.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/tools/model_fusion_test.py). It should be noted that ensemble-boxes must be installed.
-And the path of results is needed to be change. Two similar models can obtain the best result.
+Specify the paths of the results in tools/model_fusion_test.py, and run
 ```shell
 python tools/model_fusion_test.py
 ```
 
 ## Evaluation
-[evaluate.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/evaluate.py) is the official evaluation tool in this competition.
+[evaluate.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/evaluate.py) is the officially provided evaluation tool. Run
 ```shell
 python evaluate.py ${GT_DIR} ${CSV_Pred_File}
 ```
-Notice: GT_DIR is the path of original data folder which contains both the image and txt file.
-CSV_Pred_File is the path of the final prediction csv file. 
+Note: GT_DIR is the path of the original data folder which contains both the image and the GT files. 
+CSV_Pred_File is the path of the final prediction csv file.
 
 # Result
-This result train with Tr00, Tr01, Va00 and Va01, test at Ts01.
-
+Train on Tr00, Tr01, Va00 and Va01, and test on Ts01. Some results are as follows,
 **F1-score**
     <table>
         <tr>
@@ -200,8 +197,8 @@ This result train with Tr00, Tr01, Va00 and Va01, test at Ts01.
         </tr>
     </table>
 
-The result we finally submitted is obtained by fusion of two Resnest101+GFL models with different random seeds and all the labeled data.
-The final Ranking can be seen in our [technical report](https://arxiv.org/abs/2107.05534).
+Our final result, that was ranked 1st place in the competition, was obtained by fusing two Resnest101+GFL models trained with two different random seeds and all labeled data.
+The final ranking can be seen in our [technical report](https://arxiv.org/abs/2107.05534).
 
 # License
 This project is licensed under the MIT License. See LICENSE for more details.
