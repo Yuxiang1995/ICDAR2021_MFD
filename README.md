@@ -6,7 +6,7 @@ We implement our solution based on [MMDetection](https://github.com/open-mmlab/m
 ## Method Description
 We built our approach on [FCOS](https://arxiv.org/abs/1904.01355), A simple and strong anchor-free object detector, with [ResNeSt](https://arxiv.org/abs/2004.08955) as our backbone, to detect embedded and isolated formulas. 
 We employed [ATSS](https://arxiv.org/abs/1912.02424) as our sampling strategy instead of random sampling to eliminate the effects of sample imbalance. Moreover, we observed and revealed the influence of different FPN levels on the detection result. 
-[GFL](https://arxiv.org/abs/2006.04388) is adopted to our loss.
+[Generalized Focal Loss](https://arxiv.org/abs/2006.04388) is adopted to our loss.
 Finally, with a series of useful tricks and model ensembles, our method was ranked 1st in the MFD task.
 
 ![Random Sampling(left) ATSS(right)](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/resources/sampling_strategy.png)
@@ -83,6 +83,7 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 
     ```shell
     pip install -r requirements/build.txt
+    pip install tensorboard
     pip install ensemble-boxes
     pip install -v -e .  # or "python setup.py develop"
     ```
@@ -207,6 +208,12 @@ This project is licensed under the MIT License. See LICENSE for more details.
 
 # Citations
 ```shell
+@article{zhong20211st,
+  title={1st Place Solution for ICDAR 2021 Competition on Mathematical Formula Detection},
+  author={Zhong, Yuxiang and Qi, Xianbiao and Li, Shanjun and Gu, Dengyi and Chen, Yihao and Ning, Peiyang and Xiao, Rong},
+  journal={arXiv preprint arXiv:2107.05534},
+  year={2021}
+}
 @article{GFLli2020generalized,
   title={Generalized focal loss: Learning qualified and distributed bounding boxes for dense object detection},
   author={Li, Xiang and Wang, Wenhai and Wu, Lijun and Chen, Shuo and Hu, Xiaolin and Li, Jun and Tang, Jinhui and Yang, Jian},
