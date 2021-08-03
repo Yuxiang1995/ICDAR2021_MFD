@@ -258,3 +258,4 @@ This project is licensed under the MIT License. See LICENSE for more details.
 * [MMDetection](https://github.com/open-mmlab/mmdetection/tree/master)
 * [Weighted Box Fusion](https://github.com/ZFTurbo/Weighted-Boxes-Fusion)
 * [Ranger](https://github.com/lessw2020/Ranger-Deep-Learning-Optimizer)
+* [Solution Slides](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/resources/MFD.pdf)
