@@ -26,6 +26,7 @@
 import math
 import torch
 from torch.optim.optimizer import Optimizer, required
+from torch.optim import Optimizer
 
 
 def centralized_gradient(x, use_gc=True, gc_conv_only=False):
@@ -40,6 +41,7 @@ def centralized_gradient(x, use_gc=True, gc_conv_only=False):
     return x
 
 
+@OPTIMIZERS.register_module()
 class RangerGC(Optimizer):
 
     def __init__(self, params, lr=1e-3,                       # lr

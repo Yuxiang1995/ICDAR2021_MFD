@@ -24,8 +24,10 @@
 import math
 import torch
 from torch.optim.optimizer import Optimizer, required
+from torch.optim import Optimizer
 
 
+@OPTIMIZERS.register_module()
 class Ranger(Optimizer):
 
     def __init__(self, params, lr=1e-3,                       # lr
