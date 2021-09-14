@@ -24,8 +24,7 @@
 import math
 import torch
 from torch.optim.optimizer import Optimizer, required
-from torch.optim import Optimizer
-
+from mmcv.runner.optimizer import OPTIMIZERS
 
 @OPTIMIZERS.register_module()
 class Ranger(Optimizer):

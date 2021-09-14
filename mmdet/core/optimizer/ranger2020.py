@@ -26,7 +26,7 @@
 import math
 import torch
 from torch.optim.optimizer import Optimizer, required
-from torch.optim import Optimizer
+from mmcv.runner.optimizer import OPTIMIZERS
 
 
 def centralized_gradient(x, use_gc=True, gc_conv_only=False):
