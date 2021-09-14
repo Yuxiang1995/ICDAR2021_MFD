@@ -24,8 +24,8 @@ You need to create a new directory named `mmdet/core/optimizer`.
 And then implement the new optimizer in a file, e.g., in `mmdet/core/optimizer/my_optimizer.py`:
 
 ```python
-from .registry import OPTIMIZERS
-from torch.optim import Optimizer
+from torch.optim.optimizer import Optimizer, required
+from mmcv.runner.optimizer import OPTIMIZERS
 
 
 @OPTIMIZERS.register_module()
