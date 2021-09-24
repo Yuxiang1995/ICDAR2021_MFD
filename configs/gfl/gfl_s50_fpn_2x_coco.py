@@ -2,7 +2,6 @@ _base_ = [
     '../_base_/datasets/formula_detection.py',
     '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
 ]
-classes = ('embedded', 'isolated')
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
     type='GFL',
@@ -65,9 +64,6 @@ test_cfg = dict(
 # batch size per GPU
 data = dict(
     samples_per_gpu=3,
-    train=dict(classes=classes),
-    val=dict(classes=classes),
-    test=dict(classes=classes)
 )
 # use ResNeSt img_norm
 img_norm_cfg = dict(
