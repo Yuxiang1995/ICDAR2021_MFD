@@ -79,13 +79,13 @@ data = dict(
     val=dict(
         type=dataset_type,
         ann_file=data_root + 'Ts01/train_coco_sdk4.json',
-        img_prefix=data_root + 'Tr01/img/',
+        img_prefix=data_root + 'Ts01/img/',
         classes=classes,
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
         ann_file=data_root + 'Ts10/train_coco_sdk4.json',
-        img_prefix=data_root + 'Tr10/img/',
+        img_prefix=data_root + 'Ts10/img/',
         classes=classes,
         pipeline=test_pipeline))
 evaluation = dict(interval=1, metric='bbox')
