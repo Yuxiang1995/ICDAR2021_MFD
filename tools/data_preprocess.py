@@ -103,7 +103,7 @@ class Txt2CoCo:
         annotation = {}
         ann = ann.strip('\n').split('\t')
         label = int(ann[-1]) + 1
-        annotation['categpry_id'] = label
+        annotation['category_id'] = label
 
         flag = True
         annotation['id'] = self.ann_id
