@@ -91,7 +91,9 @@ If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
 # Usage
 
 ## Data Preparation
-Firstly, Firstly, you need to put the image files and the GT files into two separate folders as below.
+Now, the organizer provides a free download link for [Dataset](https://doi.org/10.5281/zenodo.4757865)
+
+Firstly, you need to put the image files and the GT files into two separate folders as below.
 
 ```shell
 Tr01
