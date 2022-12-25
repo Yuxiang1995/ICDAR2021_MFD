@@ -36,7 +36,7 @@ class Math2Txt:
                     y4 = y3
                     data = str(x1) + '\t' + str(y1) + '\t' + str(x2) + '\t' + str(y2) + '\t' \
                            + str(x3) + '\t' + str(y3) + '\t' + str(x4) + '\t' + str(y4) + '\t' + label + '\n'
-                    print(data)
+                    # print(data)
                     g.write(data)
                 g.close()
 
@@ -133,10 +133,10 @@ class Txt2CoCo:
 
 
 if __name__ == '__main__':
-    img_path = 'Your split image path'
-    txt_path = 'Your split txt label path'
-    dst_path = 'icdar txt label path'
-    train_path = 'coco format json destination folder'
+    img_path = '/platform_tech/zhongyuxiang/dataset/IBEM_dataset/Va01/img'  # Your split image path
+    txt_path = '/platform_tech/zhongyuxiang/dataset/IBEM_dataset/Va01/gt'   # Your split txt label path
+    dst_path = '/platform_tech/zhongyuxiang/dataset/IBEM_dataset/Va01/gt_icdar' # icdar txt label path
+    train_path = '/platform_tech/zhongyuxiang/dataset/IBEM_dataset/Va01'    # coco format json destination folder
 
     toIcdar = Math2Txt(img_path, txt_path, dst_path)
     toIcdar.convert2Txt()

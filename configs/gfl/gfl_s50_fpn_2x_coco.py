@@ -40,7 +40,8 @@ model = dict(
             ratios=[1.0],
             octave_base_scale=8,
             scales_per_octave=1,
-            strides=[8, 16, 32, 64, 128]),
+            strides=[4, 8, 16, 32, 64]     #[8, 16, 32, 64, 128]
+            ),
         loss_cls=dict(
             type='QualityFocalLoss',
             use_sigmoid=True,
@@ -69,4 +70,4 @@ data = dict(
 img_norm_cfg = dict(
     mean=[123.68, 116.779, 103.939], std=[58.393, 57.12, 57.375], to_rgb=True)
 # optimizer
-optimizer = dict(type='Ranger', lr=0.001)
+optimizer = dict(type='Ranger', lr=0.0001)
