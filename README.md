@@ -1,4 +1,6 @@
 # Update
+***25/12/2022***: Fix the bug that resnest does not converge. Provide the [download link](https://drive.google.com/file/d/1ZG1dLdhAL5h1uLpZVu4CPZXPDTJzwgB-/view?usp=share_link) of model trained with [gfl_s50_fpn_2x_coco.py](https://github.com/Yuxiang1995/ICDAR2021_MFD/blob/main/configs/gfl/gfl_s50_fpn_2x_coco.py).
+
 ***16/06/2022***: Add the download link for [Dataset](https://doi.org/10.5281/zenodo.4757865)
 
 # About The Project
@@ -30,6 +32,12 @@ Finally, with a series of useful tricks and model ensembles, our method was rank
 This project is based on MMDetection-v2.7.0, mmcv-full>=1.1.5, <1.3 is needed.
 Note: You need to run `pip uninstall mmcv` first if you have mmcv installed.
 If mmcv and mmcv-full are both installed, there will be `ModuleNotFoundError`.
+
+If you are using A100, it is recommended to use pytorch==1.7.0+cu110 and mmcv==1.2.7
+```shell
+  conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
+  pip install mmcv-full==1.2.7 -f https://download.openmmlab.com/mmcv/dist/cu110/torch1.7/index.html
+```
 
 ## Installation
 
