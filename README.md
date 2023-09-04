@@ -23,7 +23,7 @@ Finally, with a series of useful tricks and model ensembles, our method was rank
 ## Prerequisites
 
 - Linux or macOS (Windows is in experimental support)
-- Python 3.6+
+- Python 3.6~3.8
 - PyTorch 1.3+
 - CUDA 9.2+ (If you build PyTorch from source, CUDA 9.0 is also compatible)
 - GCC 5+
